@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tom.dao.BlogDao">
+
+    <select id="queryAll" resultType="com.tom.pojo.Blog">
+        SELECT * FROM myblog.blog ORDER BY id DESC
+    </select>
+
+    <select id="queryByLabel" parameterType="String" resultType="com.tom.pojo.Blog">
+        SELECT * FROM myblog.blog WHERE label = #{label}
+    </select>
+
+    <select id="queryByLike" parameterType="String" resultType="com.tom.pojo.Blog">
+        SELECT * FROM  myblog.blog WHERE blogContent LIKE '%${question}%' OR
+                                         blogName LIKE '%${question}%' OR
+                                         label LIKE '%${question}%' OR
+                                         introduction LIKE '%${question}%'
+    </select>
+
+    <select id="queryByID" resultType="com.tom.pojo.Blog" parameterType="_int">
+        SELECT * FROM myblog.blog WHERE id = #{id}
+    </select>
+
+    <insert id="addBlog" parameterType="com.tom.pojo.Blog">
+        INSERT INTO myblog.blog (blogName, label, introduction, blogContent, url, comeForm)
+                                VALUES (#{blogName}, #{label}, #{introduction}, #{blogContent}, #{url}, #{comeForm})
+    </insert>
+
+    <select id="queryByTitle" parameterType="String" resultType="com.tom.pojo.Blog">
+        SELECT * FROM myblog.blog WHERE blogContent LIKE '%${title}%' OR
+                                         blogName LIKE '%${title}%' OR
+                                         label LIKE '%${title}%' OR
+                                         introduction LIKE '%${title}%'
+    </select>
+
+    <delete id="deleteBlogById" parameterType="_int">
+        DELETE FROM myblog.blog WHERE id = #{id}
+    </delete>
+
+    <update id="alterBlog" parameterType="com.tom.pojo.Blog">
+        UPDATE myblog.blog SET
+        blogName = #{blogName}, label = #{label}, comeForm = #{comeForm},
+        introduction = #{introduction}, blogContent = #{blogContent}, url = #{url}
+        where id = #{id}
+    </update>
+
+    <update id="addView" parameterType="_int">
+        UPDATE myblog.blog SET view = view + 1 WHERE id = #{id}
+    </update>
+
+    <select id="getTotalView" resultType="_int">
+        SELECT SUM(view) FROM myblog.blog
+    </select>
+
+
+
+</mapper>
+
+

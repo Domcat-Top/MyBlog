@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客管理</title>
+  <link href="../../static/images/me.jpg" th:href="@{/images/me.jpg}" rel="icon" type="image/x-ico">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--导航-->
+<nav class="ui inverted gird-header" >
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui olive header item" style="font-family: STSong">Admin</h2>
+            <a th:href="@{/admin/toAdminIndex}" class="active m-item item"><i class="home icon"></i>后台首页</a>
+            <a th:href="@{/admin/toTypes}" class="active m-item item m-mobile-hide"><i class="clone outline icon"></i>标签管理</a>
+            <a th:href="@{/admin/toBlogs}" class="active m-item item m-mobile-hide"><i class="pencil alternate icon"></i>博客管理</a>
+            <a th:href="@{/admin/toBlogWrite}" class="active m-item item m-mobile-hide"><i class="book icon"></i>博客撰写</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!--这个可以返回到博客首页-->
+            <a th:href="@{/toIndex}" class="active m-item item m-mobile-hide"><i class="home icon"></i>博客首页</a>
+            <div class="right m-item m-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <!--头像-->
+                    <div class="text">
+                        <img class="ui avatar image" th:src="@{/images/me.jpg}">
+                        <span>Tom</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a th:href="@{/toLogout}" class="item">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+      <i class="sidebar icon"></i>
+    </a>-->
+</nav>
+
+
+<div  class="m-padded-tb-massivex">
+    <div class="ui container">
+        <div class="ui success large  message">
+            <p align="center">一直朝着一个方向前进，一切都会变的得心应手。</p>
+        </div>
+    <img th:src="@{https://w.wallhaven.cc/full/4x/wallhaven-4x2mj3.jpg}" alt="" class="ui rounded bordered fluid image">
+    </div>
+</div>
+
+<br>
+
+<footer class="ui inverted vertical segment m-padded-tb-massive m-opacity">
+  <!--容器-->
+  <div class="ui center aligned container">
+    <div class="ui inverted divided stackable grid">
+      <div class="four wide column">
+        <div style="font-size: large;font-weight: bold" class="ui inverted m-text-thin m-text-spaced m-margin-top-max" >联系我</div>
+        <div class="ui inverted link list">
+          <div href="#" class="m-text-thin">Email：incytom@qq.com</div>
+          <div href="#" class="m-text-thin">QQ：1755619015</div>
+        </div>
+      </div>
+
+      <!--第二个栏目，暂时还没想好写什么-->
+      <div class="four wide column" >
+        <div class="ui inverted link list">
+          <div class="item">
+            <!--微信-->
+            <div style="font-size: large;font-weight: bold" class="ui inverted m-text-thin m-text-spaced " >微信</div>
+            <img  th:src="@{/images/weichat.png}"  class="ui m-margin-top rounded image" alt="" style="width: 110px">
+
+          </div>
+        </div>
+      </div>
+      <!--第三个栏目-->
+      <div class="four wide column">
+        <div class="ui inverted link list">
+          <div class="item">
+            <!--QQ-->
+            <div style="font-size: large;font-weight: bold" class="ui inverted m-text-thin m-text-spaced " >问题交流（QQ）</div>
+            <img th:src="@{/images/QQ.png}"  class="ui m-margin-top rounded image" alt="" style="width: 110px">
+          </div>
+        </div>
+      </div>
+      <!--第四个栏目-->
+      <div class="four wide column">
+        <div style="font-size: large;font-weight: bold" class="ui inverted  m-text-thin m-text-spaced m-margin-top">站点信息</div>
+        <!--<p id="htmer_time" class="item m-text-thin"></p>-->
+        <div id="blog-message">
+          <div class="ui inverted link list" style="align-content: center;margin-top: 10px">
+            <div class="m-text-thin" style="text-align: left;margin-left: 75px;">
+              文章总数： <h2 class="ui orange header m-inline-block m-margin-top-null" style="font-size:medium;" th:text="${blogSize}">  </h2> 篇
+            </div>
+            <div class="m-text-thin" style="text-align: left;margin-left: 75px">
+              访问总数： <h2 class="ui orange header m-inline-block m-margin-top-null" style="font-size:medium;"> 376 </h2> 次
+            </div>
+            <div class="m-text-thin" style="text-align: left;margin-left: 75px">
+              留言总数： <h2 class="ui orange header m-inline-block m-margin-top-null" style="font-size:medium;" th:text="${messageSize}">  </h2> 条
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui inverted section divider"></div>
+    <a rel="nofollow" href="http://www.beian.miit.gov.cn" target="_blank">Copyright &copy; Tom's website 2020 - to now</a>
+  </div>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
+<script>
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+        on : 'hover'
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+
+    $('#clear-btn')
+        .on('click', function() {
+            $('.ui.type.dropdown')
+                .dropdown('clear');
+        });
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+    }
+
+    $("#search-btn").click(function () {
+        $("[name='page']").val(0);
+        loaddata();
+    });
+    function loaddata() {
+        $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search",{
+            title : $("[name='title']").val(),
+            typeId : $("[name='typeId']").val(),
+            page : $("[name='page']").val()
+        });
+    }
+
+</script>
+
+
+</body>
+</html>
