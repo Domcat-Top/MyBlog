@@ -140,7 +140,10 @@ public class BlogController {
         } else if(request.getParameter("formPage") != null) { // 判断是否表单里面写了，如果写了的话也可以执行分页查询
             if(Integer.parseInt(request.getParameter("formPage")) >= totalNumbers) { // 进行判断，如果输入的数字太大，超过了原有的总的页数，就直接给他查询最后一夜的数据，不会报错，避免了异常
                 page = totalNumbers;
+            } else if(Integer.parseInt(request.getParameter("formPage")) < 1) { // 小于1，则显示的是第一页
+                page = 1;
             } else {
+                // 这些情况都不满足，则直接返回正确的页面
                 page = Integer.parseInt(request.getParameter("formPage"));
             }
         }
