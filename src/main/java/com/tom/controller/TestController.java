@@ -1,8 +1,11 @@
 package com.tom.controller;
 
 import com.tom.dao.BlogDao;
+import com.tom.dao.MessageDao;
 import com.tom.pojo.Blog;
+import com.tom.pojo.Message;
 import com.tom.service.BlogService;
+import com.tom.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,9 @@ public class TestController {
 
     @Autowired
     BlogService blogService;
+
+    @Autowired
+    MessageService messageService;
 
     @RequestMapping("/test")
     @ResponseBody
@@ -53,6 +59,15 @@ public class TestController {
     @RequestMapping("/500")
     public String to500() {
         return "error/500";
+    }
+
+    @RequestMapping("/testPage")
+    @ResponseBody
+    public String toPage() {
+
+        List<Message> messages = messageService.queryByPage(1, 10);
+
+        return messages.toString();
     }
 
 
