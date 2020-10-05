@@ -117,15 +117,57 @@ public class BlogController {
 
     // 留言板
     @RequestMapping("/toMessage")
-    public String toMessage(Model model) {
-        model.addAttribute("blogSize", blogSize);
+    public String toMessage(Model model, HttpServletRequest request) {
 
-        List<Message> messageList = messageService.queryAll();
+        List<Message> messages = messageService.queryAll();
+        int totalNumbers; // 记录总的页数
+        if(messages.size() % 10 == 0) { // 直接/10就是总的页数
+            totalNumbers = messages.size() / 10;
+        } else {
+            // 总的页数需要加1才是要显示的页数
+            totalNumbers = messages.size() / 10 + 1;
+        }
+        model.addAttribute("totalNumbers", totalNumbers); // 总的页数
+
+
+        final int pageSize = 10; // 规定只能一页10条数据
+
+        int page = 1; // 先设定一个默认值为1，如果后面有东西的话，就替换掉，没有的话，就继续保持这个1
+
+        // 这里优先选择上一页或者下一页的查询，表单输出查询优先级比较后
+        if(request.getParameter("page") != null) { // 如果有参数的话，就给page赋值，当前的页数
+            page = Integer.parseInt(request.getParameter("page"));
+        } else if(request.getParameter("formPage") != null) { // 判断是否表单里面写了，如果写了的话也可以执行分页查询
+            if(Integer.parseInt(request.getParameter("formPage")) >= totalNumbers) { // 进行判断，如果输入的数字太大，超过了原有的总的页数，就直接给他查询最后一夜的数据，不会报错，避免了异常
+                page = totalNumbers;
+            } else {
+                page = Integer.parseInt(request.getParameter("formPage"));
+            }
+        }
+
+        List<Message> messageList = messageService.queryByPage(page, pageSize);
 
         model.addAttribute("messageList", messageList);
 
-        model.addAttribute("messageSize", messageSize);
+        model.addAttribute("page", page); // 返回当前的页数
 
+        // 判断上一页和下一页是否要显示出来
+        boolean prePage = false;
+        boolean nextPage = false;
+        if(page == 1) { // 第一页，不需要显示出上一页
+            prePage = false;
+            nextPage = true;
+        } else if(page == totalNumbers) {
+            prePage = true;
+            nextPage = false;
+        }
+
+        model.addAttribute("prePage", prePage);
+        model.addAttribute("nextPage", nextPage); // 发送到前端作为前端是否要显示出来的判断
+
+        // 页脚三兄弟
+        model.addAttribute("blogSize", blogSize);
+        model.addAttribute("messageSize", messageSize);
         model.addAttribute("totalView", totalView);
 
         return "message";

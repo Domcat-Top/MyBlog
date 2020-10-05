@@ -5,6 +5,7 @@ import com.tom.pojo.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,8 +20,16 @@ public class MessageServiceImpl implements MessageService{
         return messageDao.queryAll();
     }
 
+    @Transactional
     @Override
     public int addMessage(Message message) {
         return messageDao.addMessage(message);
     }
+
+    @Override
+    public List<Message> queryByPage(int pageNumber, int pageSize) {
+        return messageDao.queryByPage((pageNumber - 1) * pageSize, pageSize);
+    }
+
+
 }

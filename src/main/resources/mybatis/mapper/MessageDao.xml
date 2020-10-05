@@ -13,6 +13,10 @@
         INSERT INTO myblog.message (nickName, email, content)  VALUE (#{nickName}, #{email}, #{content})
     </insert>
 
+    <select id="queryByPage" resultType="com.tom.pojo.Message">
+        SELECT * FROM myblog.message LIMIT #{pageNumber}, #{pageSize}
+    </select>
+
 
 
 </mapper>

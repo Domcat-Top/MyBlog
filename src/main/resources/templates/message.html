@@ -91,37 +91,6 @@
               </div>
           </form>
 
-          <!--<input type="hidden" name="parentMessage.id" value="-1">
-          &lt;!&ndash;                    留言区&ndash;&gt;
-          <div class="field">
-              <textarea name="content" placeholder="请输入留言信息..."></textarea>
-          </div>
-          <div class="ui grid">
-              &lt;!&ndash;                    输入昵称&ndash;&gt;
-              <div class="five wide column">
-                  <div class="field m-mobile-wide m-margin-bottom-small">
-                      <div class="ui left icon input">
-                          <i class="user icon"></i>
-                          <input type="text" name="nickname" placeholder="昵称">
-                      </div>
-                  </div>
-              </div>
-              &lt;!&ndash;                        输入邮箱&ndash;&gt;
-              <div class="five wide column">
-                  <div class="field m-mobile-wide m-margin-bottom-small">
-                      <div class="ui left icon input">
-                          <i class="mail icon"></i>
-                          <input type="text" name="email" placeholder="Email">
-                      </div>
-                  </div>
-              </div>
-              <div class="right aligned six wide column">
-              <div class="field m-mobile-wide m-margin-bottom-small">
-                  <a th:href="@{/toAddMessage}" class="ui icon button"><i class="edit icon"></i> 发布 </a>
-              </div>
-              </div>
-          </div>-->
-
       </div>
       <!--留言区-->
       <div class="ui bottom attached m-margin-top">
@@ -151,9 +120,38 @@
 
                   </div>
               </div>
-
+              <!--分页组件-->
+              <div class="ui center aligned segment">
+                  <div class="ui small pagination menu">
+                      <a class="item teal" th:href="@{/toMessage(page=1)}">
+                          首页
+                      </a>
+                      <a class="item" th:if="${prePage}" th:href="@{/toMessage(page=${page}-1)}">
+                          上一页
+                      </a>
+                      <a class="item">
+                          当前第<h3 class="ui orange header m-inline-block m-text-thin" th:text="${page}"></h3>页
+                      </a>
+                      <a class="item" th:if="${nextPage}" th:href="@{/toMessage(page=${page}+1)}">
+                          下一页
+                      </a>
+                      <a class="item" th:href="@{/toMessage(page=${totalNumbers})}">
+                          尾页
+                      </a>
+                      <a class="item">
+                          共<h3 class="ui red header m-inline-block m-text-thin" th:text="${totalNumbers}">20</h3>页
+                      </a>
+                      <form name="pageForm" class="right item" th:action="@{/toMessage}" method="get">
+                          <div class="ui right labeled input">
+                              <div class="ui basic label">去往</div>
+                              <input type="text" name="formPage" required="required" placeholder="页码..."
+                                     style="width: 80px;">
+                              <div class="ui basic label">页</div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
           </div>
-
       </div>
 
     <br>
