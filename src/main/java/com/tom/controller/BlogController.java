@@ -152,8 +152,8 @@ public class BlogController {
         model.addAttribute("page", page); // 返回当前的页数
 
         // 判断上一页和下一页是否要显示出来
-        boolean prePage = false;
-        boolean nextPage = false;
+        boolean prePage = true;
+        boolean nextPage = true;
         if(page == 1) { // 第一页，不需要显示出上一页
             prePage = false;
             nextPage = true;

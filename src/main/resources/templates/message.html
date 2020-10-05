@@ -130,7 +130,7 @@
                           上一页
                       </a>
                       <a class="item">
-                          当前第<h3 class="ui orange header m-inline-block m-text-thin" th:text="${page}"></h3>页
+                          第<h3 class="ui orange header m-inline-block m-text-thin" th:text="${page}"></h3>页
                       </a>
                       <a class="item" th:if="${nextPage}" th:href="@{/toMessage(page=${page}+1)}">
                           下一页
