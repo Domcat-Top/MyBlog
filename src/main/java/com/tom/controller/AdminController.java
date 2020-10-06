@@ -117,7 +117,7 @@ public class AdminController {
     }
 
     // 删除标签操作
-    @RequestMapping("/admin/toDeleteLabel")
+    @PostMapping("/admin/toDeleteLabel")
     public String toDeleteLabel(Model model, HttpServletRequest request) {
 
         String id = request.getParameter("id");
@@ -187,7 +187,7 @@ public class AdminController {
     private static String id;
 
     // 去往博客编辑页面
-    @RequestMapping("/admin/toChangeBlog")
+    @GetMapping("/admin/toChangeBlog")
     public String toChangeBlog(Model model, HttpServletRequest request) {
         blogSize = blogService.queryAll().size();
         messageSize = messageService.queryAll().size();
@@ -207,7 +207,7 @@ public class AdminController {
     }
 
     // 删除博客
-    @RequestMapping("/admin/toDelete")
+    @PostMapping("/admin/toDelete")
     public String toDeleteBlog(HttpServletRequest request) {
 
         String id = request.getParameter("id");

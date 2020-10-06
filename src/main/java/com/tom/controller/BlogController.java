@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class BlogController {
@@ -38,7 +39,7 @@ public class BlogController {
     RedisTemplate redisTemplate;
 
     // 首页
-    @RequestMapping({"/toIndex", "/", "index", "/blog"})
+    @GetMapping({"/toIndex", "/", "index", "/blog"})
     public String toIndex(Model model) {
 
         // 设置序列化编码
@@ -51,7 +52,9 @@ public class BlogController {
                 blogList = (List<Blog>) redisTemplate.opsForValue().get("blogList");
                 if(null == blogList) {
                     blogList = blogService.queryAll();
-                    redisTemplate.opsForValue().set("blogList", blogList);
+                    // 在放入Redis的时候，直接给他设置了过期时间
+                    // 四个参数的含义:                             key,value,过期时间,单位
+                    redisTemplate.opsForValue().set("blogList", blogList, 300, TimeUnit.SECONDS);
                 }
             }
         }
@@ -77,7 +80,7 @@ public class BlogController {
     }
 
     // 分类
-    @RequestMapping("/toTypes")
+    @GetMapping("/toTypes")
     public String toTypes(Model model, HttpServletRequest request) {
 
         model.addAttribute("blogSize", blogSize);
@@ -116,7 +119,7 @@ public class BlogController {
     }
 
     // 留言板
-    @RequestMapping("/toMessage")
+    @GetMapping("/toMessage")
     public String toMessage(Model model, HttpServletRequest request) {
 
         List<Message> messages = messageService.queryAll();
@@ -177,7 +180,7 @@ public class BlogController {
     }
 
     // 时间轴
-    @RequestMapping("/toArchives")
+    @GetMapping("/toArchives")
     public String toArchives(Model model) {
 
         List<Blog> blogList = blogService.queryAll();
