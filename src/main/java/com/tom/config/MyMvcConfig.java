@@ -12,6 +12,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
+                .addPathPatterns("/swagger-ui.html")
                 .addPathPatterns("/admin", "/admin/**")
                 .excludePathPatterns("/", "/css/**", "/img/**", "/editor.md-master/**", "/lib/**");
 
