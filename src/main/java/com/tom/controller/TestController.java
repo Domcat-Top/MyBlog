@@ -70,6 +70,13 @@ public class TestController {
         return messages.toString();
     }
 
+    @ResponseBody
+    @RequestMapping("/testGithub")
+    public String toGithub() {
+
+        return "redirect:";
+    }
+
 
 
 

@@ -4,6 +4,7 @@ import com.tom.pojo.Message;
 import com.tom.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -16,6 +17,7 @@ public class MessageController {
     MessageService messageService;
 
     @PostMapping("/toAddMessage")
+    @Transactional
     public String toAddMessage(Model model, HttpServletRequest request) {
 
         String content = request.getParameter("content");

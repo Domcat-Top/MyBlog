@@ -39,7 +39,7 @@ public class BlogController {
     RedisTemplate redisTemplate;
 
     // 首页
-    @GetMapping({"/toIndex", "/", "index", "/blog"})
+    @GetMapping({"/toIndex", "/", "/index", "/blog"})
     public String toIndex(Model model) {
 
         // 设置序列化编码

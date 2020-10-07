@@ -9,6 +9,7 @@ import com.tom.service.MessageService;
 import com.tom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 import java.util.List;
 
 @Controller
@@ -64,8 +64,10 @@ public class AdminController {
     @RequestMapping("/toLogout")
     public String toLogout(HttpSession session) {
 
-        session.removeAttribute("currentUser");
+        if(session.getAttribute("currentUser") != null) {
+            session.removeAttribute("currentUser");
 
+        }
         return "redirect:/";
     }
 
@@ -117,6 +119,7 @@ public class AdminController {
     }
 
     // 删除标签操作
+    @Transactional
     @PostMapping("/admin/toDeleteLabel")
     public String toDeleteLabel(Model model, HttpServletRequest request) {
 
@@ -133,6 +136,7 @@ public class AdminController {
     }
 
     // 执行写入数据库操作
+    @Transactional
     @PostMapping("/admin/writeBlog")
     public String writeBlog(Model model, HttpServletRequest request) {
 
@@ -227,6 +231,7 @@ public class AdminController {
 
     // 修改博客
     @PostMapping("/admin/alterBlog")
+    @Transactional
     public String alterBlog(HttpServletRequest request) {
 
         String flag = request.getParameter("flag");

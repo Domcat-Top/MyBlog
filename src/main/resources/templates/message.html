@@ -275,10 +275,6 @@
         }
     });
 
-    // 初始化加载
-    // $(function () {
-    //     $("#message-container").load(/*[[@{/messagecomment}]]*/"messagecomment");
-    // });
 
     // 校验信息
     $('#messagepost-btn').click(function () {
@@ -291,19 +287,6 @@
         }
     });
 
-    //发送请求给后端
-//     function postData() {
-//         $("#message-container").load(/*[[@{/messages}]]*/"",{
-//             "parentMessage.id" : $("[name='parentMessage.id']").val(),
-//             // "blog.id" : $("[name='blog.id']").val(),
-//             "nickname": $("[name='nickname']").val(),
-//             "email"   : $("[name='email']").val(),
-//             "content" : $("[name='content']").val()
-//         },function (responseTxt, statusTxt, xhr) {
-// //        $(window).scrollTo($('#message-container'),500);
-//             clearContent();
-//         });
-//     }
 
     // 清除表单
     function clearContent() {
@@ -314,13 +297,6 @@
         $("[name='content']").attr("placeholder", "请输入评论信息...");
     }
 
-    // function reply(obj) {
-    //     var messageId = $(obj).data('messageid');
-    //     var messageNickname = $(obj).data('messagenickname');
-    //     $("[name='content']").attr("placeholder", "@"+messageNickname).focus();
-    //     $("[name='parentMessage.id']").val(messageId);
-    //     $(window).scrollTo(0,500);
-    // }
 
 </script>
 </body>

@@ -196,15 +196,6 @@
         position: 'bottom center'
     });
 
-    tocbot.init({
-        // Where to render the table of contents.
-        tocSelector: '.js-toc',
-        // Where to grab the headings to build the table of contents.
-        contentSelector: '.js-toc-content',
-        // Which headings to grab inside of the contentSelector element.
-        headingSelector: 'h1, h2, h3',
-    });
-
     $('.toc.button').popup({
         popup : $('.toc-container.popup'),
         on : 'click',
@@ -246,24 +237,10 @@
 
 
 
-    $('#commentpost-btn').click(function () {
-        var boo = $('.ui.form').form('validate form');
-        if (boo) {
-            console.log('校验成功');
-            postData();
-        } else {
-            console.log('校验失败');
-        }
-    });
 
 
-    function clearContent() {
-        $("[name='nickname']").val('');
-        $("[name='email']").val('');
-        $("[name='content']").val('');
-        $("[name='parentComment.id']").val(-1);
-        $("[name='content']").attr("placeholder", "请输入评论信息...");
-    }
+
+
 
 
 
