@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.FlashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -86,24 +87,35 @@ public class BlogController {
         model.addAttribute("blogSize", blogSize);
         model.addAttribute("totalView", totalView);
         model.addAttribute("messageSize", messageSize);
-
         List<Foreignkey> foreignkeyList = foreignkeyDao.queryAll();
+        model.addAttribute("foreignkeyList", foreignkeyList);
+
+        boolean b = true;
 
         String label = request.getParameter("label");
 
-        if(label == null) {
+        if(label == null) { // 这个是第一次访问的时候啥标签都没选择的时候要显示的东西
             List<Blog> labelList = blogService.queryAll();
             int forNumber = 9;
             model.addAttribute("labelList", labelList);
             model.addAttribute("forNumber", forNumber);
-        } else {
-            List<Blog> labelList = blogService.queryByLabel(label);
-            int forNumber = labelList.size() - 1;
-            model.addAttribute("labelList", labelList);
-            model.addAttribute("forNumber", forNumber);
-        }
 
-        model.addAttribute("foreignkeyList", foreignkeyList);
+        } else { // 走到这一步就是按照Lable查询
+            List<Blog> labelList = blogService.queryByLabel(label);
+            // 这种情况下，说明这个标签下面一篇文章都没有，则，直接不显示所有的即可
+            if(labelList.size() == 0) {
+                b = false;
+                int forNumber = 0;
+                model.addAttribute("labelList", labelList);
+                model.addAttribute("forNumber", forNumber);
+            } else {
+                b = true; // 需要显示出东西来，则返回给前端参数
+                int forNumber = labelList.size() - 1;
+                model.addAttribute("labelList", labelList);
+                model.addAttribute("forNumber", forNumber);
+            }
+        }
+        model.addAttribute("b", b); // 用于校验是否要显示出来那些div
 
         return "types";
     }
@@ -227,21 +239,21 @@ public class BlogController {
     @GetMapping("/toLabelTypes")
     public String toLabelSearch(Model model, HttpServletRequest request) {
 
+        boolean b = true;
         List<Foreignkey> foreignkeyList = foreignkeyDao.queryAll();
 
-        String label = request.getParameter("question");
+        String question = request.getParameter("question");
 
-        List<Blog> labelList = blogService.queryByLabel(label);
+        List<Blog> labelList = blogService.queryByLabel(question);
+
         int forNumber = labelList.size() - 1;
         model.addAttribute("labelList", labelList);
         model.addAttribute("forNumber", forNumber);
 
+        model.addAttribute("b", b);
         model.addAttribute("foreignkeyList", foreignkeyList);
-
         model.addAttribute("blogSize", blogSize);
-
         model.addAttribute("messageSize", messageSize);
-
         model.addAttribute("totalView", totalView);
 
         return "types";
@@ -277,6 +289,8 @@ public class BlogController {
 
         // 重新放入并且输出
         blog.setBlogContent(blogContent);
+
+        model.addAttribute("url", "http://101.200.78.148:8080/QRCodes/" + blog.getId() + ".jpg");
 
         model.addAttribute("blog", blog);
 

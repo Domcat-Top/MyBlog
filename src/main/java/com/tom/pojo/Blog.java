@@ -60,6 +60,10 @@ public class Blog implements Serializable {
         this.blogContent = blogContent;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getBlogContent() {
         return blogContent;
     }

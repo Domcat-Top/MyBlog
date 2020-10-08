@@ -7,6 +7,7 @@ import com.tom.pojo.User;
 import com.tom.service.BlogService;
 import com.tom.service.MessageService;
 import com.tom.service.UserService;
+import com.tom.utils.QRCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -157,6 +158,11 @@ public class AdminController {
         if(result == 0) {
             return "error/500";
         } else {
+            // 写博客成功了，自动的给他生成一个二维码文件，放在服务器上面
+            String codeContent = "http://101.200.78.148:8888/toBlog?id=" + blogService.queryByTitle(title).get(0).getId();
+            String path = "/home/blog/QRCode";
+            QRCodeUtils.fileName = "" + blogService.queryByTitle(title).get(0).getId();
+            boolean b = QRCodeUtils.codeCreate(codeContent, path, 150, null);
             return "redirect:/admin/toBlogs";
         }
 
@@ -211,7 +217,7 @@ public class AdminController {
     }
 
     // 删除博客
-    @PostMapping("/admin/toDelete")
+    @RequestMapping("/admin/toDelete")
     public String toDeleteBlog(HttpServletRequest request) {
 
         String id = request.getParameter("id");
@@ -251,6 +257,11 @@ public class AdminController {
         if(result == 0) {
             return "error/500";
         } else {
+            // 写博客成功了，自动的给他生成一个二维码文件，放在服务器上面
+            String codeContent = "http://101.200.78.148:8888/toBlog?id=" + blogService.queryByTitle(title).get(0).getId();
+            String path = "/home/blog/QRCode";
+            QRCodeUtils.fileName = "" + blogService.queryByTitle(title).get(0).getId();
+            boolean b = QRCodeUtils.codeCreate(codeContent, path, 150, null);
             return "redirect:/admin/toBlogs";
         }
 

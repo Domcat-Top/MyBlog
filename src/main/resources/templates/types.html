@@ -69,7 +69,7 @@
 
     <div class="ui top attached teal m-opacity segment">
       <!--博文列表-->
-      <div class="ui padded segment m-padded-tb-large m-opacity" th:each="i:${#numbers.sequence(0, forNumber)}">
+      <div class="ui padded segment m-padded-tb-large m-opacity" th:if="${b}" th:each="i:${#numbers.sequence(0, forNumber)}">
         <div class="ui large aligned mobile reversed stackable grid">
           <!--博文信息-->
           <div class="eleven wide column ">
@@ -107,6 +107,12 @@
     </div>
   </div>
 </div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
 
 <!--置顶图标-->
 <div class="m-padded-tb-large m-fixed m-right-bottom">
