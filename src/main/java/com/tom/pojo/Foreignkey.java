@@ -19,6 +19,12 @@ public class Foreignkey implements Serializable {
     public Date create_time;
     public Date update_time;
 
+    public Foreignkey(int id, String label) {
+        this.id = id;
+        this.label = label;
+    }
+
+
     public String formatCreateTime() {
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy/MM/dd");
         return simpleDateFormat.format(create_time);

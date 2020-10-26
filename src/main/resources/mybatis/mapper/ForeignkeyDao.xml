@@ -17,6 +17,14 @@
         DELETE FROM myblog.foreignkey WHERE id = #{id};
     </delete>
 
+    <insert id="addLabel">
+        INSERT INTO myblog.foreignkey (label) VALUES (#{name})
+    </insert>
+
+    <update id="alterLabel" parameterType="com.tom.pojo.Foreignkey">
+        UPDATE myblog.foreignkey SET label = #{label} WHERE id = #{id}
+    </update>
+
 
 
 

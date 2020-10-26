@@ -28,4 +28,14 @@ public class ForeignkeyServiceImpl implements ForeignkeyService {
     public int deleteLabel(int id) {
         return labelDao.deleteLabel(id);
     }
+
+    @Override
+    public int addLabel(String name) {
+        return labelDao.addLabel(name);
+    }
+
+    @Override
+    public int alterLabel(Foreignkey foreignkey) {
+        return labelDao.alterLabel(foreignkey);
+    }
 }

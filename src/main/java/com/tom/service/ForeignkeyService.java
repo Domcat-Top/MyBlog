@@ -16,4 +16,11 @@ public interface ForeignkeyService {
     // 删除标签
     public int deleteLabel(int id);
 
+    // 添加标签
+    public int addLabel(String name);
+
+    // 修改标签
+    public int alterLabel(Foreignkey foreignkey);
+
+
 }

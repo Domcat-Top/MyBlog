@@ -265,6 +265,57 @@ public class AdminController {
         return "admin/types-input";
     }
 
+    // 执行标签添加的操作
+    @RequestMapping("/admin/addLabel")
+    public String addLabel(HttpServletRequest request) {
+
+        // 获取标签的名称
+        String labelId = request.getParameter("name");
+
+        // 执行写入数据库的操作
+        int i = foreignkeyDao.addLabel(labelId);
+
+        if(i >= 1) {
+            // 添加成功
+            return "redirect:/admin/toTypes";
+        } else {
+            // 报错500
+            return "redirect:/500";
+        }
+
+
+    }
+
+    // 去往标签的修改页面---顺手把那个标签的ID发过去
+    private static String labelId;
+    @RequestMapping("/admin/toChangeLabel")
+    public String toChangeLabel(HttpServletRequest request, Model model) {
+
+        labelId = request.getParameter("id");
+
+        // 通过ID获取到这个标签的name
+        List<Foreignkey> foreignkeyList = foreignkeyDao.queryById(Integer.parseInt(request.getParameter("id")));
+        model.addAttribute("foreignkeyList", foreignkeyList);
+        return "admin/types-change";
+    }
+
+    // 标签的修改
+    @RequestMapping("/admin/changeLabel")
+    public String aboutLabel(HttpServletRequest request) {
+
+        String name = request.getParameter("name");
+
+        // 执行修改操作写入数据库
+        int i = foreignkeyDao.alterLabel(new Foreignkey(Integer.parseInt(labelId), name));
+
+        if(i >= 1) {
+            // 修改成功
+            return "redirect:/admin/toTypes";
+        } else {
+            return "500";
+        }
+
+    }
 
 
 

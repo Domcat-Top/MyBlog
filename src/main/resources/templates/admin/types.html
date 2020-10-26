@@ -76,7 +76,7 @@
           <td th:text="${foreignkeyList.get(i).label}"></td>
           <td th:text="${foreignkeyList.get(i).formatUpdateTime()}"></td>
           <td>
-            <a href="#" class="ui mini teal basic button">编辑</a>
+            <a th:href="@{/admin/toChangeLabel(id=${foreignkeyList.get(i).id})}" class="ui mini teal basic button">编辑</a>
             <!--有外键关联，暂时还删不掉，先不删除了-->
 <!--
               <a th:href="@{/admin/toDeleteLabel(id=${foreignkeyList.get(i).id})}"  onclick="return confirm('确定要删除该分类吗？')" class="ui mini red basic button">删除</a>
@@ -89,21 +89,8 @@
       <tfoot>
         <tr>
           <th colspan="6" >
-            <!--<div class="ui inverted divided stackable grid">
-              <div class="three wide column" align="center">
-                <a class="item">上一页</a>
-              </div>
-
-              <div class="ten wide column" align="center">
-                <p>第 <span></span> 页，共 <span></span> 页，有 <span></span> 个分类</p>
-              </div>
-
-              <div class="three wide column" align="center">
-                <a class="item">下一页</a>
-              </div>
-            </div>-->
             <div align="center">
-            <a href="#">
+            <a th:href="@{/admin/toAddLabel}">
               <button type="button" class="ui teal button m-mobile-wide m-margin-top"><i class="pencil icon"></i>新增</button>
             </a>
             </div>
