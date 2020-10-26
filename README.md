@@ -13,4 +13,4 @@
   **首页**
   ![首页](https://github.com/Tomcats2019/MyBlog/blob/master/index.png)
 ## 具体实例
-http://101.200.78.148:8888/
+http://101.200.78.148
