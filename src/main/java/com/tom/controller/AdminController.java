@@ -254,16 +254,8 @@ public class AdminController {
 
         int result = blogService.alterBlog(new Blog(Integer.parseInt(id), title, label, description, content, picture, flag));
 
-        if(result == 0) {
-            return "error/500";
-        } else {
-            // 写博客成功了，自动的给他生成一个二维码文件，放在服务器上面
-            String codeContent = "http://101.200.78.148:8888/toBlog?id=" + blogService.queryByTitle(title).get(0).getId();
-            String path = "/home/blog/QRCode";
-            QRCodeUtils.fileName = "" + blogService.queryByTitle(title).get(0).getId();
-            boolean b = QRCodeUtils.codeCreate(codeContent, path, 150, null);
-            return "redirect:/admin/toBlogs";
-        }
+        // 再把这个改回来，之前是为了以前的操作方便些的，这次是为了代码的简便
+        return "redirect:/admin/toBlogs";
 
     }
 
