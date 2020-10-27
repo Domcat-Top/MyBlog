@@ -77,12 +77,11 @@
           <td th:text="${foreignkeyList.get(i).formatUpdateTime()}"></td>
           <td>
             <a th:href="@{/admin/toChangeLabel(id=${foreignkeyList.get(i).id})}" class="ui mini teal basic button">编辑</a>
-            <!--有外键关联，暂时还删不掉，先不删除了-->
+                <!--有外键关联，暂时还删不掉，先不删除了-->
+              <a th:href="@{/admin/toDelete(id=${foreignkeyList.get(i).id})}"  onclick="return confirm('确定要删除该分类吗？')" class="ui mini red basic button">删除</a>
 <!--
-              <a th:href="@{/admin/toDeleteLabel(id=${foreignkeyList.get(i).id})}"  onclick="return confirm('确定要删除该分类吗？')" class="ui mini red basic button">删除</a>
--->
               <a th:href="@{/admin/toTypes}"  onclick="return confirm('抱歉，标签组有外键关联，暂时无法删除！')" class="ui mini red basic button">删除</a>
-
+-->
           </td>
         </tr>
       </tbody>

@@ -194,9 +194,10 @@ public class AdminController {
         return "admin/blogs";
     }
 
-    private static String id;
+
 
     // 去往博客编辑页面
+    private static String id;
     @GetMapping("/admin/toChangeBlog")
     public String toChangeBlog(Model model, HttpServletRequest request) {
         blogSize = blogService.queryAll().size();
@@ -222,15 +223,21 @@ public class AdminController {
 
         String id = request.getParameter("id");
 
-        if(id != null) {
-            int result = blogService.deleteBlogById(Integer.parseInt(id));
-            if(result == 0) {
-                return "error/500";
-            } else {
-                return "redirect:/admin/toBlogs";
-            }
-        } else {
+        // 现查询出这个ID对应的标签是谁
+        List<Foreignkey> foreignkeyList = foreignkeyDao.queryById(Integer.parseInt(id));
+
+        // 删除之前先查询是否在这个标签下面还有博客，如果有的话，就不让删除
+        List<Blog> blogList = blogService.queryByLabel(foreignkeyList.get(0).label);
+
+        if(blogList.size() > 0) { // 大于0，说明这个容器里面有东西，也就是这个标签下面还有博客，不允许删除
+            return "error/500"; // 直接报错500
+        }
+
+        int result = foreignkeyDao.deleteLabel(Integer.parseInt(id));
+        if(result == 0) {
             return "error/500";
+        } else {
+            return "redirect:/admin/toTypes";
         }
 
     }
