@@ -144,7 +144,7 @@
                       <form name="pageForm" class="right item" th:action="@{/toMessage}" method="get">
                           <div class="ui right labeled input">
                               <div class="ui basic label">去往</div>
-                              <input type="text" name="formPage" required="required" placeholder="页码..."
+                              <input type="number" name="formPage" required="required" placeholder="页码..."
                                      style="width: 80px;">
                               <div class="ui basic label">页</div>
                           </div>
@@ -249,7 +249,7 @@
                 ]
             },
             content: {
-                identifier: 'nickname',
+                identifier: 'nickName',
                 rules: [{
                     type: 'empty',
                     prompt: '请输入你的大名'
@@ -280,7 +280,7 @@
 
     // 清除表单
     function clearContent() {
-        $("[name='nickname']").val('');
+        $("[name='nickName']").val('');
         $("[name='email']").val('');
         $("[name='content']").val('');
         $("[name='parentMessage.id']").val(-1);
