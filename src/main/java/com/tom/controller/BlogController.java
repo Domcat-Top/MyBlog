@@ -41,9 +41,89 @@ public class BlogController {
 
     // 首页
     @GetMapping({"/toIndex", "/", "/index", "/blog"})
-    public String toIndex(Model model) {
+    public String toIndex(Model model, HttpServletRequest request) {
 
-        // 设置序列化编码
+        // 设置一个初始页，也就是第一次访问要展示的，第一页
+        int page = 1;
+        // 进行分页查询，查询出当前page对应的所有东西，根据数据库的东西来定
+        // 也就不需要自己手动确定页面显示数据的长度
+        // 先确定查询的时候一页多少
+        final int pageSize = 10; // 一页十条查询
+
+        // 判断是否是以后的访问，如果是之后的访问，那么就会有数据从前端传递，也就是说，page是有值的
+        if(request.getParameter("page") != null) { // 前段传递过值来了
+            page = Integer.parseInt(request.getParameter("page")); // 给page赋值前端的值
+        }
+
+        int totalPage; // 用于记录总的页数
+        List<Blog> queryAll = blogService.queryAll();
+
+        blogSize = queryAll.size(); // 这个就是从始至终，记录整个博客数量的变量，会一直用到
+        messageSize = messageService.queryAll().size();
+        totalView = blogService.getTotalView();
+
+        // 这里有个误区，就是如果记录数小于十，也是会出问题的，但是由于我们这里的数据超过了十条，也就不考虑那个问题了
+        if(queryAll.size() % 10 == 0) { // 可以整除，页数不需要+1
+            totalPage = queryAll.size() / 10;
+        } else {
+            totalPage = queryAll.size() / 10 + 1;
+        }
+        // 用于判断是否显示上一页和下一页---除了第一页和最后一页的特殊情况下，显示一个，其他情况下的，都是都显示出来的，所以默认都给他为true
+        boolean prePage = true;
+        boolean nextPage = true;
+
+        if(page == 1) { // 第一页没有上一页，则不显示
+            prePage = false;
+            nextPage = true;
+        } else if(page == totalPage) { // 最后一页，则显示上一页，不显示下一页
+            prePage = true;
+            nextPage = false;
+        }
+
+        // 进行数据库的分页查询
+        // 把获取到的数据，返回给前端即可
+        // 这里使用一个双重锁机制，防止绕过redis直接访问我的数据库
+
+        // 设置序列化
+        redisTemplate.setKeySerializer(RedisUtils.setRedisSerializer());
+        // 尝试从redis取出这个数据
+        List<Blog> blogList = (List<Blog>) redisTemplate.opsForValue().get("blogList" + page);
+        // 没有取出来的话，就访问数据库
+        if(null == blogList) {
+            // 把这个方法锁定，就是说，同时一万个人访问，第一个人会访问数据库，其他人都是访问的redis
+            // 这样可能会让其他的人慢那么一点，但是会让我们的数据库负载一下变得很小
+            synchronized(this) {
+                blogList = (List<Blog>) redisTemplate.opsForValue().get("blogList" + page);
+                if(null == blogList) {
+                    blogList = blogService.queryByPageAndPageSize(page, pageSize);
+                    // 在放入Redis的时候，直接给他设置了过期时间
+                    // 四个参数的含义:                             key,value,过期时间,单位
+                    redisTemplate.opsForValue().set("blogList" + page, blogList, 300, TimeUnit.SECONDS);
+                }
+            }
+        }
+
+        // 在这里参数准备完毕，我们直接返回前端数据，进行显示
+
+        // 上一页和下一页的判断依据
+        model.addAttribute("prePage", prePage);
+        model.addAttribute("nextPage", nextPage);
+        // 每页要显示的内容
+        model.addAttribute("blogList", blogList);
+        // 每页要显示的长度
+        model.addAttribute("length", blogList.size() - 1);
+        // 第几页
+        model.addAttribute("page", page);
+        // 共多少页
+        model.addAttribute("totalPage", totalPage);
+        // 页脚三兄弟
+        model.addAttribute("blogSize", blogSize);
+        model.addAttribute("messageSize", messageSize);
+        model.addAttribute("totalView", totalView);
+
+        return "index";
+
+        /*// 设置序列化编码
         redisTemplate.setKeySerializer(RedisUtils.setRedisSerializer());
 
         List<Blog> blogList = (List<Blog>) redisTemplate.opsForValue().get("blogList");
@@ -77,7 +157,7 @@ public class BlogController {
 
         model.addAttribute("totalView", totalView);
 
-        return "index";
+        return "index";*/
     }
 
     // 分类
@@ -143,7 +223,6 @@ public class BlogController {
             totalNumbers = messages.size() / 10 + 1;
         }
         model.addAttribute("totalNumbers", totalNumbers); // 总的页数
-
 
         final int pageSize = 10; // 规定只能一页10条数据
 

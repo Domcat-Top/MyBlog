@@ -117,7 +117,7 @@
                     </div>
                 </div>
                 <!--博文列表-->
-                <div class="ui padded segment m-padded-tb-large m-opacity" th:each="i:${#numbers.sequence(0,9)}">
+                <div class="ui padded segment m-padded-tb-large m-opacity" th:each="i:${#numbers.sequence(0, length)}">
                     <div class="ui large aligned mobile reversed stackable grid">
                         <!--博文信息-->
                         <div class="eleven wide column ">
@@ -153,6 +153,22 @@
                     </div>
                 </div>
             </div>
+
+            <!--这里想添加一个分页的组件-->
+            <div class="ui bottom attached segment m-opacity stackable grid">
+                <div class="three wide column" align="center">
+                    <a class="item" th:if="${prePage}" th:href="@{/toIndex(page=${page}-1)}">上一页</a>
+                </div>
+
+                <div class="ten wide column" align="center">
+                    <p> <span th:text="${page}"></span> / <span th:text="${totalPage}"></span> </p>
+                </div>
+
+                <div class="three wide column" align="center">
+                    <a class="item" th:if="${nextPage}" th:href="@{/toIndex(page=${page}+1)}">下一页</a>
+                </div>
+            </div>
+
 
         </div>
     </div>
@@ -230,13 +246,6 @@
         $('.m-item').toggleClass('m-mobile-show');
 
     });
-
-    // 显示公众号
-    $('.tencent').popup({
-        popup : $('.tencent-qr'),
-        position: 'bottom center'
-    });
-
     // 显示微信
     $('.wechat').popup({
         popup : $('.wechat-qr'),
@@ -251,9 +260,6 @@
 
     // 显示邮箱
     $('.email').popup();
-
-    // 显示CSDN
-    $('.csdn').popup();
 
     // 显示github
     $('.github').popup();

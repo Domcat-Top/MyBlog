@@ -2,9 +2,11 @@ package com.tom.dao;
 
 import com.tom.pojo.Blog;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -45,6 +47,9 @@ public interface BlogDao {
 
     // 总的访问量
     int getTotalView();
+
+    // 具体的分页查询
+    List<Blog> queryByPageAndPageSize(@Param("page") int page, @Param("pageSize") int pageSize);
 
 
 

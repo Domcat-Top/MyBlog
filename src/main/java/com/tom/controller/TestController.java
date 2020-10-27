@@ -77,6 +77,14 @@ public class TestController {
         return "redirect:";
     }
 
+    // 测试首页的分页是否成功
+    @ResponseBody
+    @RequestMapping("/testIndexPage")
+    public String testIndexPage() {
+        List<Blog> blogList = blogService.queryByPageAndPageSize(1, 10);
+        return blogList.toString();
+    }
+
 
 
 

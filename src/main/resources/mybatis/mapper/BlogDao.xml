@@ -55,6 +55,10 @@
         SELECT SUM(view) FROM myblog.blog
     </select>
 
+    <select id="queryByPageAndPageSize" resultType="com.tom.pojo.Blog">
+        SELECT * FROM myblog.blog ORDER BY id DESC LIMIT #{page}, #{pageSize}
+    </select>
+
 
 
 </mapper>

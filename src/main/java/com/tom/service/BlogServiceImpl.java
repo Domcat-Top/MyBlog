@@ -70,5 +70,10 @@ public class BlogServiceImpl implements BlogService{
         return blogDao.getTotalView();
     }
 
+    @Override
+    public List<Blog> queryByPageAndPageSize(int page, int pageSize) {
+        return blogDao.queryByPageAndPageSize((page - 1) * pageSize, pageSize);
+    }
+
 
 }
