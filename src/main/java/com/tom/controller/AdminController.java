@@ -159,7 +159,7 @@ public class AdminController {
             return "error/500";
         } else {
             // 写博客成功了，自动的给他生成一个二维码文件，放在服务器上面
-            String codeContent = "http://101.200.78.148:8888/toBlog?id=" + blogService.queryByTitle(title).get(0).getId();
+            String codeContent = "http://101.200.78.148/toBlog?id=" + blogService.queryByTitle(title).get(0).getId();
             String path = "/home/blog/QRCode";
             QRCodeUtils.fileName = "" + blogService.queryByTitle(title).get(0).getId();
             boolean b = QRCodeUtils.codeCreate(codeContent, path, 150, null);
@@ -223,21 +223,12 @@ public class AdminController {
 
         String id = request.getParameter("id");
 
-        // 现查询出这个ID对应的标签是谁
-        List<Foreignkey> foreignkeyList = foreignkeyDao.queryById(Integer.parseInt(id));
+        int result = blogService.deleteBlogById(Integer.parseInt(id));
 
-        // 删除之前先查询是否在这个标签下面还有博客，如果有的话，就不让删除
-        List<Blog> blogList = blogService.queryByLabel(foreignkeyList.get(0).label);
-
-        if(blogList.size() > 0) { // 大于0，说明这个容器里面有东西，也就是这个标签下面还有博客，不允许删除
-            return "error/500"; // 直接报错500
-        }
-
-        int result = foreignkeyDao.deleteLabel(Integer.parseInt(id));
         if(result == 0) {
             return "error/500";
         } else {
-            return "redirect:/admin/toTypes";
+            return "redirect:/admin/toBlogs";
         }
 
     }
@@ -261,7 +252,17 @@ public class AdminController {
 
         int result = blogService.alterBlog(new Blog(Integer.parseInt(id), title, label, description, content, picture, flag));
 
-        // 再把这个改回来，之前是为了以前的操作方便些的，这次是为了代码的简便
+        // 弥补之前的错误，编辑的时候，生成一个二维码
+
+        // 二维码要指向的地址
+        String codeContent = "http://101.200.78.148/toBlog?id=" + blogService.queryByTitle(title).get(0).getId();
+        // 二维码存放的位置
+        String path = "/home/blog/QRCode";
+        // 二维码的名字
+        QRCodeUtils.fileName = "" + blogService.queryByTitle(title).get(0).getId();
+        // 执行生成二维码的方法
+        boolean b = QRCodeUtils.codeCreate(codeContent, path, 150, null);
+
         return "redirect:/admin/toBlogs";
 
     }
