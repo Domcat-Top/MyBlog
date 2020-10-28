@@ -164,9 +164,11 @@ public class BlogController {
     @GetMapping("/toTypes")
     public String toTypes(Model model, HttpServletRequest request) {
 
+        // 页脚三兄弟
         model.addAttribute("blogSize", blogSize);
         model.addAttribute("totalView", totalView);
         model.addAttribute("messageSize", messageSize);
+
         List<Foreignkey> foreignkeyList = foreignkeyDao.queryAll();
         model.addAttribute("foreignkeyList", foreignkeyList);
 
@@ -175,17 +177,18 @@ public class BlogController {
         String label = request.getParameter("label");
 
         if(label == null) { // 这个是第一次访问的时候啥标签都没选择的时候要显示的东西
-            List<Blog> labelList = blogService.queryAll();
-            int forNumber = 9;
-            model.addAttribute("labelList", labelList);
-            model.addAttribute("forNumber", forNumber);
+
+            List<Blog> blogList = blogService.queryAll();
+            model.addAttribute("labelList", blogList);
+            model.addAttribute("forNumber", 9);
+
 
         } else { // 走到这一步就是按照Lable查询
             List<Blog> labelList = blogService.queryByLabel(label);
             // 这种情况下，说明这个标签下面一篇文章都没有，则，直接不显示所有的即可
             if(labelList.size() == 0) {
                 b = false;
-                int forNumber = 0;
+                int forNumber = 0; // 这时候这个设置多少都无所谓了
                 model.addAttribute("labelList", labelList);
                 model.addAttribute("forNumber", forNumber);
             } else {
@@ -195,6 +198,8 @@ public class BlogController {
                 model.addAttribute("forNumber", forNumber);
             }
         }
+
+        // 这个很重要不能丢掉
         model.addAttribute("b", b); // 用于校验是否要显示出来那些div
 
         return "types";
