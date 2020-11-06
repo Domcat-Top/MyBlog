@@ -87,20 +87,21 @@
 <div class="ui m-padded-tb-large">
     <div class="ui m-container-small m-opacity">
         <div class="ui secondary segment " align="center">
-            <i class="bookmark icon"></i>暂时还没想好写什么
+            <i class="bookmark icon"></i>经典电影分享
         </div>
     </div>
-    <!--以后有想法了再去写-->
-    <!--<div class="ui stackable m-container-mini m-opacity grid">
-        <div class="m-margin-tb-tiny four wide column">
-            <a href="#" class="class_outer">
-                <img th:src="@{/images/me.jpg}" width="270" height="220" alt="" class="ui rounded image">
+    <!--暂时这一块我准备放几部经典的电影-->
+    <div class="ui stackable m-container-mini m-opacity grid">
+        <div class="m-margin-tb-tiny four wide column" th:if="${videoBoolean}" th:each="i:${#numbers.sequence(0, videoSize)}">
+            <a th:href="@{/toShowVideo(cover=${descVideoList.get(i).cover})}"  class="class_outer">
+                <img th:src="@{${descVideoList.get(i).cover}}" width="350" height="450" alt="" class="ui rounded image">
                 <span class="class_cover" >
-                     <h4 class="m-font-size-blog-text m-margin-tb-tiny">先留下，有想法了再补充这个模块</h4>
+                     <h4 class="m-font-size-blog-text m-margin-tb-tiny" th:text="${descVideoList.get(i).name}"></h4>
                   </span>
             </a>
         </div>
-    </div>-->
+    </div>
+
 
 </div>
 

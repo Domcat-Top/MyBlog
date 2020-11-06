@@ -1,17 +1,23 @@
 package com.tom.controller;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.tom.dao.BlogDao;
 import com.tom.dao.ForeignkeyDao;
 import com.tom.pojo.Blog;
 import com.tom.pojo.Foreignkey;
 import com.tom.pojo.Message;
+import com.tom.pojo.vo.DescVideo;
+import com.tom.pojo.vo.PlayVideo;
 import com.tom.service.BlogService;
 import com.tom.service.MessageService;
+import com.tom.service.VideoService;
 import com.tom.utils.RedisUtils;
+import com.tom.utils.aliUtils.MyAliyunUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.FlashMap;
@@ -21,6 +27,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Controller
+@CrossOrigin
 public class BlogController {
 
     // 博客总数
@@ -37,11 +44,27 @@ public class BlogController {
     @Autowired
     MessageService messageService;
     @Autowired
+    VideoService videoService;
+
+    @Autowired
     RedisTemplate redisTemplate;
+
 
     // 首页
     @GetMapping({"/toIndex", "/", "/index", "/blog"})
     public String toIndex(Model model, HttpServletRequest request) {
+
+        // 给新加的模块查询数据
+        List<DescVideo> descVideoList = videoService.queryIndexVideo();
+        if(descVideoList.size() == 0) {
+            model.addAttribute("videoBoolean", false);
+        } else {
+            model.addAttribute("videoBoolean", true);
+        }
+
+        // 把得到的数据传递给前端页面，显示出来
+        model.addAttribute("descVideoList", descVideoList);
+        model.addAttribute("videoSize", descVideoList.size() - 1); // 后端直接处理好数据，以防万一发送到前端还需要继续进行处理
 
         // 设置一个初始页，也就是第一次访问要展示的，第一页
         int page = 1;
@@ -84,7 +107,7 @@ public class BlogController {
         // 把获取到的数据，返回给前端即可
         // 这里使用一个双重锁机制，防止绕过redis直接访问我的数据库
 
-        // 设置序列化
+        // 设置序列化（给Key设置序列化，否则在redis中显示出来的是乱码）
         redisTemplate.setKeySerializer(RedisUtils.setRedisSerializer());
         // 尝试从redis取出这个数据
         List<Blog> blogList = (List<Blog>) redisTemplate.opsForValue().get("blogList" + page);
@@ -385,7 +408,39 @@ public class BlogController {
         model.addAttribute("totalView", totalView);
 
         return "blog";
+    }
 
+    // 添加跳转器，播放选中的电影
+    @RequestMapping("/toShowVideo")
+    public String toShowVideo(HttpServletRequest request, Model model) throws ClientException {
+
+        String cover = request.getParameter("cover");
+
+        // 通过封面图的地址，来查询整个需要的数据，因为阿里云储存的封面图的路径是独一无二的，所以才可以用到
+        // 如果用name的话，name有可能会冲突，所以就选了Cover
+        PlayVideo playVideo = videoService.queryByCover(cover);
+
+        // 获取到videoId
+        String videoId = playVideo.getVideoId();
+        // 实时查询新的凭证
+        String aliyunPlayAuth = MyAliyunUtils.getAliyunPlayAuth(videoId);
+
+        if(playVideo == null) { // 啥都没查到，直接到404
+            return "404";
+        }
+        // 查询到了，有结果，则传递到播放页面，直接显示出来
+        // 有东西，则发送给前端
+        model.addAttribute("cover", cover);
+        model.addAttribute("videoId", playVideo.getVideoId());
+        model.addAttribute("playAuth", aliyunPlayAuth);
+
+        // 页脚三兄弟
+        model.addAttribute("blogSize", blogSize);
+        model.addAttribute("messageSize", messageSize);
+        model.addAttribute("totalView", totalView);
+
+        // 页面跳转
+        return "showVideo";
     }
 
 

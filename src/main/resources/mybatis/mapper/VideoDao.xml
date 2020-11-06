@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tom.dao.VideoDao">
+
+    <insert id="addInfoAboutVideo" parameterType="com.tom.pojo.vo.UploadVideo">
+        INSERT INTO myblog.video (name, videoId, playAuth, cover) VALUES (#{name}, #{videoId}, #{playAuth}, #{cover})
+    </insert>
+
+    <select id="queryAllVideo" resultType="com.tom.pojo.vo.QueryVideo">
+        SELECT id, name, view, videoId, playAuth, cover, update_time FROM myblog.video
+    </select>
+
+    <delete id="deleteByVideoId">
+        DELETE FROM myblog.video WHERE videoId = #{videoId}
+    </delete>
+
+    <select id="queryByVideoId" resultType="com.tom.pojo.Video">
+        SELECT * FROM myblog.video WHERE videoId = #{videoId}
+    </select>
+
+    <select id="queryIndexVideo" resultType="com.tom.pojo.vo.DescVideo">
+        SELECT name, cover FROM myblog.video ORDER BY id DESC LIMIT 4
+    </select>
+
+    <select id="queryByCover" resultType="com.tom.pojo.vo.PlayVideo">
+        SELECT videoId, playAuth, cover FROM myblog.video WHERE cover = #{cover}
+    </select>
+
+
+</mapper>
+
+

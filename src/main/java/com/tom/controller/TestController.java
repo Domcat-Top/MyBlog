@@ -9,6 +9,7 @@ import com.tom.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -85,7 +86,18 @@ public class TestController {
         return blogList.toString();
     }
 
+    // 测试去到Video页面
+    @RequestMapping("/video")
+    public String video() {
+        return "video";
+    }
 
+
+    // 测试一下上传是否可以
+    @RequestMapping("/toTest")
+    public String toTest() {
+        return "test";
+    }
 
 
 
