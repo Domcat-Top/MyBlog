@@ -87,14 +87,14 @@
 <div class="ui m-padded-tb-large">
     <div class="ui m-container-small m-opacity">
         <div class="ui secondary segment " align="center">
-            <i class="bookmark icon"></i>经典电影分享
+            <i class="bookmark icon"></i>精选视频分享
         </div>
     </div>
     <!--暂时这一块我准备放几部经典的电影-->
     <div class="ui stackable m-container-mini m-opacity grid">
         <div class="m-margin-tb-tiny four wide column" th:if="${videoBoolean}" th:each="i:${#numbers.sequence(0, videoSize)}">
             <a th:href="@{/toShowVideo(cover=${descVideoList.get(i).cover})}"  class="class_outer">
-                <img th:src="@{${descVideoList.get(i).cover}}" width="350" height="450" alt="" class="ui rounded image">
+                <img th:src="@{${descVideoList.get(i).cover}}" width="350" height="200" alt="" class="ui rounded image">
                 <span class="class_cover" >
                      <h4 class="m-font-size-blog-text m-margin-tb-tiny" th:text="${descVideoList.get(i).name}"></h4>
                   </span>
