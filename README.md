@@ -11,7 +11,7 @@
   ###### 整合了谷歌二维码生成工具，可以生成二维码并且上传到服务器，调取到前端页面展示。
 ## 网站图片示例
   **首页**
-  ![index](https://github.com/Tomcats2019/MyBlog/blob/master/index.jpg)
+  ![indexpicture](https://github.com/Tomcats2019/MyBlog/blob/master/indexpicture.jpg)
 ## 具体实例
 http://domcat.top
 
