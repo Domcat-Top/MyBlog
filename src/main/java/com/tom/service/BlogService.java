@@ -1,6 +1,7 @@
 package com.tom.service;
 
 import com.tom.pojo.Blog;
+import com.tom.pojo.Foreignkey;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,12 @@ public interface BlogService {
 
     // 具体的分页查询
     List<Blog> queryByPageAndPageSize(@Param("page") int page, @Param("pageSize") int pageSize);
+
+    // 查询使用最多的标签
+    Foreignkey queryMaxLabelBlog();
+
+    // 根据标签出现次数的多少，来排序发布最多的博客类型---倒序
+    List<Foreignkey> queryByAppearTimesOfLabel();
 
 
 

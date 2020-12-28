@@ -59,7 +59,40 @@
         SELECT * FROM myblog.blog ORDER BY id DESC LIMIT #{page}, #{pageSize}
     </select>
 
+    <!--查询标签表中用的最多的标签-->
+    <select id="queryMaxLabelBlog" resultType="com.tom.pojo.Foreignkey">
+        SELECT
+            foreignkey.label
+        FROM
+            foreignkey
+        WHERE
+            foreignkey.label = (
+                SELECT
+                    blog.label
+                FROM
+                    blog
+                GROUP BY
+                    blog.label
+                ORDER BY
+                    COUNT(*) DESC
+                LIMIT 1
+                )
+    </select>
 
+    <select id="queryByAppearTimesOfLabel" resultType="com.tom.pojo.Foreignkey">
+        SELECT
+            foreignkey.*,
+            COUNT(*) AS 'total'
+        FROM
+            foreignkey,
+            blog
+        WHERE
+            foreignkey.label = blog.label
+        GROUP BY
+            blog.label
+        ORDER BY
+            COUNT(*) DESC
+  </select>
 
 </mapper>
 

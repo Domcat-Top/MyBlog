@@ -2,6 +2,7 @@ package com.tom.service;
 
 import com.tom.dao.BlogDao;
 import com.tom.pojo.Blog;
+import com.tom.pojo.Foreignkey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,16 @@ public class BlogServiceImpl implements BlogService{
     @Override
     public List<Blog> queryByPageAndPageSize(int page, int pageSize) {
         return blogDao.queryByPageAndPageSize((page - 1) * pageSize, pageSize);
+    }
+
+    @Override
+    public Foreignkey queryMaxLabelBlog() {
+        return blogDao.queryMaxLabelBlog();
+    }
+
+    @Override
+    public List<Foreignkey> queryByAppearTimesOfLabel() {
+        return blogDao.queryByAppearTimesOfLabel();
     }
 
 

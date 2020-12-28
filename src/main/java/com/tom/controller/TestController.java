@@ -3,6 +3,7 @@ package com.tom.controller;
 import com.tom.dao.BlogDao;
 import com.tom.dao.MessageDao;
 import com.tom.pojo.Blog;
+import com.tom.pojo.Foreignkey;
 import com.tom.pojo.Message;
 import com.tom.service.BlogService;
 import com.tom.service.MessageService;
@@ -99,7 +100,20 @@ public class TestController {
         return "test";
     }
 
+    // 测试一下查询使用最多的标签数量
+    @RequestMapping("/maxLabel")
+    @ResponseBody
+    public String maxLabel() {
+        Foreignkey foreignkey = blogService.queryMaxLabelBlog();
+        return foreignkey.getLabel();
+    }
 
+    // 测试一下倒序查询出使用最多的标签类型
+    @RequestMapping("/descLabelStyle")
+    @ResponseBody
+    public List<Foreignkey> descLabelStyle() {
+        return blogService.queryByAppearTimesOfLabel();
+    }
 
 
 

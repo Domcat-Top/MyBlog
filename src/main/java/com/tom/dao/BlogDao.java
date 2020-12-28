@@ -1,6 +1,7 @@
 package com.tom.dao;
 
 import com.tom.pojo.Blog;
+import com.tom.pojo.Foreignkey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -51,7 +52,11 @@ public interface BlogDao {
     // 具体的分页查询
     List<Blog> queryByPageAndPageSize(@Param("page") int page, @Param("pageSize") int pageSize);
 
+    // 查询发布最多类型的博客
+    Foreignkey queryMaxLabelBlog();
 
+    // 根据标签出现次数的多少，来排序发布最多的博客类型---倒序
+    List<Foreignkey> queryByAppearTimesOfLabel();
 
 
 }
