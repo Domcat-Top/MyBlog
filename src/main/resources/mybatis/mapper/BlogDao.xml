@@ -79,6 +79,7 @@
                 )
     </select>
 
+    <!--倒序输出所有使用过的标签，并且根据使用的多少来排序-->
     <select id="queryByAppearTimesOfLabel" resultType="com.tom.pojo.Foreignkey">
         SELECT
             foreignkey.*,
